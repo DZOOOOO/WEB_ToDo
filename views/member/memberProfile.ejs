@@ -17,7 +17,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous"></script>
-    <title>회원가입</title>
+    <title>마이 페이지</title>
 </head>
 <body>
 <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
@@ -38,33 +38,6 @@
     </div>
 </nav>
 
-email : <input type="text" name="email" id="email">
-password : <input type="text" name="password" id="password">
-nickName <input type="text" name="nickName" id="nickName">
-<button onclick="register()">가입</button>
-<button onclick="location.replace('/')">취소</button>
 
-<script>
-    function register() {
-        let email = document.getElementById('email').value;
-        let password = document.getElementById('password').value;
-        let nickName = document.getElementById('nickName').value;
-
-        $.ajax({
-            url: "http://localhost:3000/member/register",
-            method: 'POST',
-            data: {
-                email,
-                password,
-                nickName
-            },
-            success: function (response) {
-                console.log(response);
-                alert(response.message);
-                window.location.reload();
-            }
-        });
-    }
-</script>
 </body>
 </html>

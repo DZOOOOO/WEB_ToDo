@@ -1,21 +1,42 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const passport = require('passport');
+const session = require('express-session');
+const utils = require('./utils/utils');
+require('dotenv').config();
+
+const MongoClient = require('mongodb').MongoClient;
 
 const todo = require('./router/todo');
-
+const member = require('./router/member');
 
 // 템플릿 엔진 ==> ejs
 app.set('view engine', 'ejs');
 
 // 라이브러리 미들웨어
-app.use(bodyParser.urlencoded({extended : true}));
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(session({secret: 'secretKey', resave: true, saveUninitialized: false}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // 라우터 미들웨어
-app.use('/todo', todo);
+app.use('/todo', utils.checkLogin, todo);
+app.use('/member', member);
 
-
-
-app.listen(3000, () => {
-    console.log('listening on 3000')
+// 메인 페이지
+app.get('/', (req, res) => {
+    let loginMember = req.user;
+    res.render('index.ejs', {info: loginMember});
 });
+
+let mongoDB;
+MongoClient.connect(process.env.MongoDB_URL, function (err, client) {
+    if (err) return console.log(err);
+    mongoDB = client.db('todoapp');
+
+    // DB 연결 ==> 서버 실행
+    app.listen('3000', () => {
+        console.log('listening on 3000')
+    });
+})

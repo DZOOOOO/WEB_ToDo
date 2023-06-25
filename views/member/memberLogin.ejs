@@ -17,7 +17,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous"></script>
-    <title>회원가입</title>
+    <title>로그인</title>
 </head>
 <body>
 <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
@@ -39,28 +39,31 @@
 </nav>
 
 email : <input type="text" name="email" id="email">
-password : <input type="text" name="password" id="password">
-nickName <input type="text" name="nickName" id="nickName">
-<button onclick="register()">가입</button>
+password : <input type="password" name="password" id="password">
+<button onclick="login()">로그인</button>
 <button onclick="location.replace('/')">취소</button>
 
 <script>
-    function register() {
+    function login() {
         let email = document.getElementById('email').value;
         let password = document.getElementById('password').value;
-        let nickName = document.getElementById('nickName').value;
 
         $.ajax({
-            url: "http://localhost:3000/member/register",
+            url: "http://localhost:3000/member/login",
             method: 'POST',
             data: {
                 email,
                 password,
-                nickName
             },
             success: function (response) {
                 console.log(response);
                 alert(response.message);
+                window.location.reload();
+            },
+            error: function (response) {
+                console.log(response.status.statusText);
+                // console.log(response.responseJSON.message);
+                alert('확인 후 다시 시도해주세요..!');
                 window.location.reload();
             }
         });
