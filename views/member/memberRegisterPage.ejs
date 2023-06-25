@@ -29,10 +29,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="#">로그인</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">회원가입</a>
+                <a class="nav-link" href="http://localhost:3000/member/login">로그인</a>
             </li>
         </ul>
     </div>
@@ -61,7 +58,7 @@ nickName <input type="text" name="nickName" id="nickName">
             success: function (response) {
                 console.log(response);
                 alert(response.message);
-                window.location.reload();
+                window.location.replace('http://localhost:3000/member/login');
             }
         });
     }

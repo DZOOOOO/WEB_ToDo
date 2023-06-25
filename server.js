@@ -19,6 +19,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(session({secret: 'secretKey', resave: true, saveUninitialized: false}));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use('/public', express.static('public'));
 
 // 라우터 미들웨어
 app.use('/todo', utils.checkLogin, todo);

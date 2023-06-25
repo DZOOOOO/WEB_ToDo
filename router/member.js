@@ -25,7 +25,7 @@ router.get('/login', memberController.memberLoginPageViewController);
 router.post('/login', passport.authenticate('local', {failureRedirect: '/fail'}
 ), memberController.memberLoginController);
 
-////////////// PASSPORT 설정 /////////////////
+////////////////////////////////////////// PASSPORT 설정 /////////////////////////////////////////////
 passport.use(new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password',

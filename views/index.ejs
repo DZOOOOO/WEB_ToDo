@@ -21,7 +21,7 @@
 </head>
 <body>
 <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
-    <a class="navbar-brand" href="http://localhost:3000">ToDo</a>
+    <a class="navbar-brand" href="/">ToDo</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -29,41 +29,39 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="#">로그인</a>
+                <a class="nav-link" href="http://localhost:3000/todo/list">나의 ToDoList</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">회원가입</a>
+                <a class="nav-link" href="#">프로필</a>
             </li>
+<!--            <li class="nav-item">-->
+<!--                <a class="nav-link" href="http://localhost:3000/member/logout">로그아웃</a>-->
+<!--            </li>-->
         </ul>
     </div>
 </nav>
 
 <% if (info !== undefined) { %>
-    <h1>안녕하세요..! <%= info.id.nickName %> 님..!</h1>
+    <div class="jumbotron">
+        <h1 class="display-4">📝 ToDo....</h1>
+        <p class="lead">공부, 일, 필요한 모든걸 ToDo List로 작성하고 하나씩 완성해보세요..!</p>
+        <hr class="my-4">
+        <p>안녕하세요..! <%= info.id.nickName %> 님..! ToDoList 작성하러 가볼까요?? 😁</p>
+        <a class="btn btn-primary btn-lg" href="http://localhost:3000/todo/write" role="button">ToDo 작성</a>
+        <a class="btn btn-primary btn-lg" href="http://localhost:3000/" role="button">커뮤니티</a>
+    </div>
 <% } else { %>
-    <h1>로그인 해주세요..!</h1>
+    <div class="jumbotron">
+        <h1 class="display-4">📝 ToDo....</h1>
+        <p class="lead">공부, 일, 필요한 모든걸 ToDo List로 작성하고 하나씩 완성해보세요..!</p>
+        <hr class="my-4">
+        <p>로그인 하시고 이용해주세요..!</p>
+        <a class="btn btn-primary btn-lg" href="http://localhost:3000/member/login" role="button">로그인</a>
+        <a class="btn btn-primary btn-lg" href="http://localhost:3000/member/view" role="button">회원가입</a>
+    </div>
 <% } %>
 
 <script>
-    function login() {
-        let email = document.getElementById('email').value;
-        let password = document.getElementById('password').value;
-
-        $.ajax({
-            url: `http://localhost:3000/member/login`,
-            method: `POST`,
-            data: {
-                email,
-                password,
-            },
-            success: function (response) {
-                console.log(response);
-            },
-            error: function (response) {
-                console.log(response);
-            }
-        });
-    }
 </script>
 </body>
 </html>
