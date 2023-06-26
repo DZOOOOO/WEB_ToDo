@@ -46,7 +46,6 @@ module.exports = {
     },
 
     editTodo(todoId, editTodo, editDate, res) {
-        console.log(todoId, editTodo, editDate);
         db.query(`UPDATE mydb.todo SET todo = '${editTodo}', date = '${editDate}' WHERE id = ${todoId}`, (err) => {
             if (err) {
                 return res.status(400).json({message: '다시 시도해주세요..!'});

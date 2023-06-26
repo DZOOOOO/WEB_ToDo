@@ -17,9 +17,18 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous"></script>
-    <title>로그인</title>
+    <style>
+        textarea {
+            width: 100%;
+            height: 6.25em;
+            border: none;
+            resize: none;
+        }
+    </style>
+    <title>게시글 작성</title>
 </head>
 <body>
+
 <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
     <a class="navbar-brand" href="http://localhost:3000">ToDo</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -29,37 +38,60 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="http://localhost:3000/member/view">회원가입</a>
+                <!--                <a class="nav-link" href="#">로그인</a>-->
+            </li>
+            <li class="nav-item">
+                <!--                <a class="nav-link" href="#">회원가입</a>-->
             </li>
         </ul>
     </div>
 </nav>
 
-email : <input type="text" name="email" id="email">
-password : <input type="password" name="password" id="password">
-<button onclick="login()">로그인</button>
-<button onclick="location.replace('/')">취소</button>
+<h4 class="container mt-4"><strong>게시글</strong></h4>
+
+<div class="container mt-3">
+    <div class="form-group">
+        <label>제목</label>
+        <input type="text" class="form-control" id="title" value="<%= data.board.title %>" readonly>
+    </div>
+
+    <div class="form-group">
+        <label>작성자</label>
+        <input type="text" class="form-control" id="nickName" value="<%= data.nickName.nickName %>" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="exampleFormControlTextarea1">내용</label>
+        <textarea class="form-control" id="content" rows="10" readonly><%= data.board.content %></textarea>
+    </div>
+    <% if (loginUser.nickName === data.nickName.nickName) { %>
+        <div style="float: right;">
+            <a class="btn btn-primary" href="http://localhost:3000/board/list">목록</a>
+            <a class="btn btn-primary" href="http://localhost:3000/board/edit/<%= data.board.id %>">수정</a>
+            <a class="btn btn-primary" onclick="deleteBoard(<%= data.board.id %>)">삭제</a>
+        </div>
+    <% } else { %>
+        <div style="float: right;">
+            <a class="btn btn-primary" href="http://localhost:3000/board/list">목록</a>
+        </div>
+    <% } %>
+
+</div>
 
 <script>
-    function login() {
-        let email = document.getElementById('email').value;
-        let password = document.getElementById('password').value;
-
+    function deleteBoard(boardId) {
         $.ajax({
-            url: "http://localhost:3000/member/login",
-            method: 'POST',
-            data: {
-                email,
-                password,
-            },
+            url: `http://localhost:3000/board/delete/${boardId}`,
+            method: `DELETE`,
+            data: {},
             success: function (response) {
-                console.log(response);
                 alert(response.message);
-                window.location.replace('http://localhost:3000/');
+                // 글 삭제 완료후 글 리스트 페이지
+                window.location.replace(`http://localhost:3000/board/list`);
             },
             error: function (response) {
-                console.log(response.status.statusText);
-                alert('확인 후 다시 시도해주세요..!');
+                alert(response.message);
+                // 글 삭제 실패시 다시 상세 페이지
                 window.location.reload();
             }
         });

@@ -8,22 +8,25 @@ require('dotenv').config();
 
 const MongoClient = require('mongodb').MongoClient;
 
+// 외부 라우터
 const todo = require('./router/todo');
 const member = require('./router/member');
+const board = require('./router/board');
 
 // 템플릿 엔진 ==> ejs
 app.set('view engine', 'ejs');
+app.use('/public', express.static('public'));
 
 // 라이브러리 미들웨어
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(session({secret: 'secretKey', resave: true, saveUninitialized: false}));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use('/public', express.static('public'));
 
 // 라우터 미들웨어
 app.use('/todo', utils.checkLogin, todo);
 app.use('/member', member);
+app.use('/board', utils.checkLogin, board);
 
 // 메인 페이지
 app.get('/', (req, res) => {
