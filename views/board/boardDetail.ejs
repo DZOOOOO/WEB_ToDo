@@ -47,23 +47,24 @@
     </div>
 </nav>
 
-<h4 class="container mt-4"><strong>게시글</strong></h4>
+<h4 class="container mt-4">
+    <strong>게시글</strong>
+</h4>
 
 <div class="container mt-3">
     <div class="form-group">
         <label>제목</label>
         <input type="text" class="form-control" id="title" value="<%= data.board.title %>" readonly>
     </div>
-
     <div class="form-group">
         <label>작성자</label>
         <input type="text" class="form-control" id="nickName" value="<%= data.nickName.nickName %>" readonly>
     </div>
-
     <div class="form-group">
         <label for="exampleFormControlTextarea1">내용</label>
         <textarea class="form-control" id="content" rows="10" readonly><%= data.board.content %></textarea>
     </div>
+
     <% if (loginUser.nickName === data.nickName.nickName) { %>
         <div style="float: right;">
             <a class="btn btn-primary" href="http://localhost:3000/board/list">목록</a>
@@ -75,10 +76,156 @@
             <a class="btn btn-primary" href="http://localhost:3000/board/list">목록</a>
         </div>
     <% } %>
+    <br><br>
+    <hr>
+    <div class="comment-area">
+        <!--    댓글 입력창    -->
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" aria-label="Recipient's username" id="comment"
+                   aria-describedby="button-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" id="button-addon2"
+                        onclick="writeComment(<%= data.board.id %>)">댓글
+                </button>
+            </div>
+        </div>
+        <div id="comment-list">
+            <!--     작성된 댓글 리스트       -->
+        </div>
+    </div>
 
 </div>
 
 <script>
+    let boardId = window.location.pathname.split('/')[3];
+    $(document).ready(function () {
+        viewComment(boardId);
+    });
+
+    // 댓글 조회
+    function viewComment(boardId) {
+        $.ajax({
+            url: `http://localhost:3000/comment/view/${boardId}`,
+            method: `GET`,
+            data: {},
+            success: function (response) {
+                let memberId = response.loginUser;
+                let commentMember = response.result;
+
+                let commentTemplate;
+                for (let i = 0; i < response.result.length; i++) {
+                    if (memberId !== commentMember[i].member_id) {
+                        commentTemplate = `<br>
+                                            <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="${commentMember[i].id}">${commentMember[i].nickName}</span>
+                                            </div>
+                                            <input type="text" aria-label="First name" class="form-control" readonly value="${commentMember[i].comment}">
+                                            </div>
+                                            `
+
+                        $('#comment-list').append(commentTemplate);
+                    } else {
+                        commentTemplate = `<br>
+                                            <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="${commentMember[i].id}">${commentMember[i].nickName}</span>
+                                            </div>
+                                            <input type="text" aria-label="First name" class="form-control" readonly value="${commentMember[i].comment}">
+                                            </div>
+
+                                            <!--   수정 댓글 창   -->
+                                            <div class="input-group mb-3" id="edit-${commentMember[i].id}" style="display: none">
+                                                <input type="text" class="form-control" aria-label="Recipient's username" id="edit-comment-${commentMember[i].id}"
+                                                       aria-describedby="button-addon2">
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-outline-secondary" type="button" id="button-addon2"
+                                                            onclick="editComment(${commentMember[i].id})">수정하기
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <button type="button" class="btn btn-success" onclick="commentEditModal(${commentMember[i].id})">수정</button>
+                                                <button type="button" class="btn btn-danger" onclick="deleteComment(${commentMember[i].id})">삭제</button>
+                                            </div>`
+
+                        $('#comment-list').append(commentTemplate);
+                    }
+                }
+            },
+            error: function (response) {
+                window.location.reload();
+            }
+        });
+    }
+
+    // 댓글 작성
+    function writeComment(boardId) {
+        let comment = document.getElementById('comment').value;
+        $.ajax({
+            url: `http://localhost:3000/comment/write`,
+            method: `POST`,
+            data: {
+                comment: comment,
+                boardId: boardId,
+            },
+            success: function (response) {
+                alert(response.message);
+                // 글 삭제 완료후 글 리스트 페이지
+                window.location.replace(`http://localhost:3000/board/detail/${boardId}`);
+            },
+            error: function (response) {
+                alert(response.message);
+                // 글 삭제 실패시 다시 상세 페이지
+                window.location.reload();
+            }
+        });
+    }
+
+    // 댓글 수정
+    function editComment(commentId) {
+        let comment = document.getElementById(`edit-comment-${commentId}`).value;
+        $.ajax({
+            url: `http://localhost:3000/comment/edit/${commentId}`,
+            method: `PATCH`,
+            data: {
+                commentId: commentId,
+                comment: comment
+            },
+            success: function (response) {
+                alert(response.message);
+                // 댓글 수정 완료후 글 리스트 페이지
+                window.location.replace(`http://localhost:3000/board/detail/${boardId}`);
+            },
+            error: function (response) {
+                alert(response.message);
+                window.location.reload();
+            }
+        });
+    }
+
+    // 댓글 삭제
+    function deleteComment(commentId) {
+        if (confirm('삭제 하시나요?')) {
+            $.ajax({
+                url: `http://localhost:3000/comment/delete/${commentId}`,
+                method: `DELETE`,
+                data: {},
+                success: function (response) {
+                    alert(response.message);
+                    // 댓글 수정 완료후 글 리스트 페이지
+                    window.location.replace(`http://localhost:3000/board/detail/${boardId}`);
+                },
+                error: function (response) {
+                    alert(response.message);
+                    window.location.reload();
+                }
+            });
+        }
+
+    }
+
+    // 게시글 삭제
     function deleteBoard(boardId) {
         $.ajax({
             url: `http://localhost:3000/board/delete/${boardId}`,
@@ -96,6 +243,19 @@
             }
         });
     }
+
+    // 댓글 수정 모달창
+    function commentEditModal(commentId) {
+        let modal = document.getElementById(`edit-${commentId}`).style.display;
+
+        if (modal === 'block') {
+            document.getElementById(`edit-${commentId}`).style.display = 'none';
+        } else {
+            document.getElementById(`edit-${commentId}`).style.display = 'block';
+        }
+        return modal;
+    }
+
 </script>
 </body>
 </html>

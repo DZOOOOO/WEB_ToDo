@@ -12,6 +12,7 @@ const MongoClient = require('mongodb').MongoClient;
 const todo = require('./router/todo');
 const member = require('./router/member');
 const board = require('./router/board');
+const comment = require('./router/comment');
 
 // 템플릿 엔진 ==> ejs
 app.set('view engine', 'ejs');
@@ -27,6 +28,7 @@ app.use(passport.session());
 app.use('/todo', utils.checkLogin, todo);
 app.use('/member', member);
 app.use('/board', utils.checkLogin, board);
+app.use('/comment', utils.checkLogin, comment);
 
 // 메인 페이지
 app.get('/', (req, res) => {
@@ -34,6 +36,7 @@ app.get('/', (req, res) => {
     res.render('index.ejs', {info: loginMember});
 });
 
+// 채팅 DB ===> MongoDB
 let mongoDB;
 MongoClient.connect(process.env.MongoDB_URL, function (err, client) {
     if (err) return console.log(err);
