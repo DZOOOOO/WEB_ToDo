@@ -36,6 +36,40 @@ app.get('/', (req, res) => {
     res.render('index.ejs', {info: loginMember});
 });
 
+// // 이미지 업로드 예시
+// let storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//         cb(null, './public/image');
+//     },
+//     filename: function (req, file, cb) {
+//         cb(null, file.originalname + new Date() + file.originalname);
+//     }
+// });
+//
+// let upload = multer({
+//     storage: storage,
+//     fileFilter: function (req, file, callback) {
+//         let ext = path.extname(file.originalname);
+//         if (ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg' && ext !== '.gif') {
+//             return callback(new Error('PNG, JPG만 업로드하세요..!'));
+//         }
+//         callback(null, true);
+//     },
+//     limits: {
+//         // 5MB 이하만 가능
+//         fileSize: 1024 * 1024 * 5
+//     }
+// });
+//
+// app.get('/upload', (req, res) => {
+//     res.render('upload.ejs');
+// });
+//
+// app.post('/upload', uploadS3.single('image'), (req, res) => {
+//     console.log(req.body, req.file.location);
+//     res.send('S3 업로드 완료..!');
+// });
+
 // 채팅 DB ===> MongoDB
 let mongoDB;
 MongoClient.connect(process.env.MongoDB_URL, function (err, client) {

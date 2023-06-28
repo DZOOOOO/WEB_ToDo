@@ -18,11 +18,18 @@
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous"></script>
     <style>
-        textarea {
+        #content-box {
             width: 100%;
-            height: 6.25em;
-            border: none;
+            padding: 10px;
+            height: 400px;
             resize: none;
+            border: 1px solid black;
+            border-radius: 10px;
+        }
+
+        img {
+            width: 300px;
+            height: 300px;
         }
     </style>
     <title>게시글 작성</title>
@@ -62,9 +69,17 @@
     </div>
     <div class="form-group">
         <label for="exampleFormControlTextarea1">내용</label>
-        <textarea class="form-control" id="content" rows="10" readonly><%= data.board.content %></textarea>
+        <div id="content-box">
+            <div id="content">
+                <%= data.board.content %>
+            </div>
+            <% if (data.imgUrl?.img_url !== undefined) { %>
+                <div id="img-box">
+                    <img src="<%= data.imgUrl.img_url %>" alt="업로드 이미지">
+                </div>
+            <% } %>
+        </div>
     </div>
-
     <% if (loginUser.nickName === data.nickName.nickName) { %>
         <div style="float: right;">
             <a class="btn btn-primary" href="http://localhost:3000/board/list">목록</a>

@@ -16,12 +16,15 @@ module.exports = {
     // 글 작성
     writeBoard(data, res) {
         db.query(`INSERT INTO mydb.board (title, content, member_id) VALUES ('${data.title}', '${data.content}', ${data.member_id})`,
-            (err, result) => {
-                if (err) {
-                    res.status(400).json({message: '다시 시도해주세요..!'});
-                } else {
-                    res.status(200).json({message: '작성완료..!', id: result.insertId});
-                }
+            (err, result1) => {
+                db.query(`INSERT INTO mydb.board_img (img_url, board_id) VALUES ('${data.img_url}', ${result1.insertId})`,
+                    (err, result2) => {
+                        if (err) {
+                            res.status(400).json({message: '다시 시도해주세요..!'});
+                        } else {
+                            res.redirect(`http://localhost:3000/board/detail/${result1.insertId}`);
+                        }
+                    })
             });
     },
 
@@ -29,16 +32,19 @@ module.exports = {
     viewBoard(boardId, loginUser, res) {
         db.query(`SELECT * FROM mydb.board WHERE id = ${boardId}`, (err, result1) => {
             db.query(`SELECT nickName FROM mydb.member WHERE id = ${result1[0].member_id}`, (err, result2) => {
-                let data = {
-                    board: result1[0],
-                    nickName: result2[0]
-                }
-                if (err) {
-                    res.status(400).json({message: '다시 시도해주세요..!'});
-                } else {
-                    res.render('board/boardDetail.ejs', {data, loginUser});
-                }
-            })
+                db.query(`SELECT * FROM mydb.board_img WHERE board_id = ${boardId}`, (err, result3) => {
+                    let data = {
+                        board: result1[0],
+                        nickName: result2[0],
+                        imgUrl: result3[0],
+                    }
+                    if (err) {
+                        res.status(400).json({message: '다시 시도해주세요..!'});
+                    } else {
+                        res.render('board/boardDetail.ejs', {data, loginUser});
+                    }
+                });
+            });
         });
     },
 
