@@ -42,7 +42,8 @@ module.exports = {
         let boardId = req.params?.id;
         let title = req.body?.title;
         let content = req.body?.content;
-        board_db.editBoard(boardId, title, content, res);
+        let img_url = req.file?.location;
+        board_db.editBoard(boardId, title, content, img_url, res);
     },
 
     deleteBoard(req, res) {

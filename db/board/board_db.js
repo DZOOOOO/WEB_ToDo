@@ -31,7 +31,7 @@ module.exports = {
     // 상세조회
     viewBoard(boardId, loginUser, res) {
         db.query(`SELECT * FROM mydb.board WHERE id = ${boardId}`, (err, result1) => {
-            db.query(`SELECT nickName FROM mydb.member WHERE id = ${result1[0].member_id}`, (err, result2) => {
+            db.query(`SELECT * FROM mydb.member WHERE id = ${result1[0].member_id}`, (err, result2) => {
                 db.query(`SELECT * FROM mydb.board_img WHERE board_id = ${boardId}`, (err, result3) => {
                     let data = {
                         board: result1[0],
@@ -54,21 +54,41 @@ module.exports = {
             if (err) {
                 res.status(400).json({message: '다시 시도해주세요..!'});
             } else {
-                res.render('board/boardEdit.ejs', {board: result[0], nickName: editUser});
+                res.render('board/boardEdit_V1.ejs', {board: result[0], nickName: editUser});
             }
         })
     },
 
     // 글 수정
-    editBoard(boardId, title, content, res) {
-        db.query(`UPDATE mydb.board SET title = '${title}', content = '${content}' WHERE id = ${boardId}`,
-            (err) => {
-                if (err) {
-                    res.status(400).json({message: '다시 시도해주세요..!'});
-                } else {
-                    res.status(200).json({message: '수정 성공..!'});
-                }
-            });
+    editBoard(boardId, title, content, img_url, res) {
+        if (img_url !== undefined) {
+            db.query(`UPDATE mydb.board SET title = '${title}', content = '${content}' WHERE id = ${boardId}`,
+                (err) => {
+                    if (err) res.status(400).json({message: '다시 시도해주세요..!'});
+                    db.query(`UPDATE mydb.board_img SET img_url = '${img_url}', board_id = ${boardId} WHERE board_id = ${boardId}`, (err) => {
+                        if (err) {
+                            res.status(400).json({message: '이미지 수정 실패..! 다시 시도해주세요..!'});
+                        } else {
+                            res.redirect(`http://localhost:3000/board/detail/${boardId}`);
+                        }
+                    });
+                });
+        } else {
+            db.query(`UPDATE mydb.board SET title = '${title}', content = '${content}' WHERE id = ${boardId}`,
+                (err) => {
+                    if (err) res.status(400).json({message: '다시 시도해주세요..!'});
+                    // 기존 이미지 찾기
+                    db.query(`SELECT * FROM mydb.board_img WHERE board_id = ${boardId}`, (err, result) => {
+                        if (err) res.status(400).json({message: '다시 시도해주세요..!'});
+                        db.query(`UPDATE mydb.board_img SET img_url = '${result[0].img_url}' WHERE board_id = ${boardId}`, (err) => {
+                            if (err) res.status(400).json({message: '다시 시도해주세요..!'});
+                            res.redirect(`http://localhost:3000/board/detail/${boardId}`);
+                        })
+                    })
+                });
+        }
+
+
     },
 
     // 글 삭제

@@ -73,7 +73,7 @@
             <div id="content">
                 <%= data.board.content %>
             </div>
-            <% if (data.imgUrl?.img_url !== undefined) { %>
+            <% if (data.imgUrl?.img_url !== 'undefined') { %>
                 <div id="img-box">
                     <img src="<%= data.imgUrl.img_url %>" alt="업로드 이미지">
                 </div>

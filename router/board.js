@@ -52,8 +52,8 @@ router.post('/v1/write', uploadS3.single('image'), boardController.writeBoard);
 // 게시글 수정 페이지 조회
 router.get('/edit/:id', boardController.viewBoardEdit)
 
-// 게시글 수정
-router.patch('/edit/:id', boardController.editBoard);
+// 게시글 수정 (method-override 이용)
+router.put('/v1/edit/:id', uploadS3.single('image'), boardController.editBoard);
 
 // 게시글 삭제
 router.delete('/delete/:id', boardController.deleteBoard);
