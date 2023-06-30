@@ -17,6 +17,25 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous"></script>
+    <style>
+        .login-box {
+            width: 800px;
+            height: 400px;
+            margin: auto;
+            padding-top: 50px;
+        }
+
+        .login-btn {
+            float: right;
+        }
+
+        .login {
+            width: 1000px;
+            margin: 120px auto auto;
+            border: 3px solid black;
+            border-radius: 10px;
+        }
+    </style>
     <title>로그인</title>
 </head>
 <body>
@@ -35,10 +54,31 @@
     </div>
 </nav>
 
-email : <input type="text" name="email" id="email">
-password : <input type="password" name="password" id="password">
-<button onclick="login()">로그인</button>
-<button onclick="location.replace('/')">취소</button>
+<div class="login">
+    <div class="login-box">
+        <div style="text-align: center">
+            <h1>ToDo</h1>
+        </div>
+        <h2>Email</h2>
+        <div class="input-group mb-3">
+            <input type="text" id="email" name="email" class="form-control"
+                   placeholder="이메일"
+                   aria-label="Username"
+                   aria-describedby="basic-addon1">
+        </div>
+        <h2>Password</h2>
+        <div class="input-group mb-3">
+            <input type="password" id="password" name="password" class="form-control"
+                   placeholder="비밀번호"
+                   aria-label="Username"
+                   aria-describedby="basic-addon1">
+        </div>
+        <div class="login-btn">
+            <button type="button" onclick="login()" class="btn btn-success">로그인</button>
+            <button type="button" onclick="location.replace('/')" class="btn btn-secondary">취소</button>
+        </div>
+    </div>
+</div>
 
 <script>
     function login() {
@@ -58,7 +98,7 @@ password : <input type="password" name="password" id="password">
                 window.location.replace('http://localhost:3000/');
             },
             error: function (response) {
-                console.log(response.status.statusText);
+                console.log(response);
                 alert('확인 후 다시 시도해주세요..!');
                 window.location.reload();
             }

@@ -2,7 +2,8 @@ const board_db = require('../../db/board/board_db')
 
 module.exports = {
     viewBoardList(req, res) {
-        board_db.viewBoardList(res);
+        let query = req.query;
+        board_db.viewBoardList(query, res);
     },
 
     viewBoardDetail(req, res) {

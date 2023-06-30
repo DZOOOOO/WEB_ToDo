@@ -18,11 +18,32 @@
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous"></script>
     <style>
-        textarea {
-            width: 100%;
-            height: 6.25em;
-            border: none;
-            resize: none;
+        .chat-content {
+            height: 450px;
+            overflow-y: scroll;
+            padding: 10px;
+        }
+
+        .chat-content li {
+            margin-top: 10px;
+            list-style: none;
+        }
+
+        .text-small {
+            font-size: 12px;
+            color: gray;
+            margin-bottom: 0;
+        }
+
+        .chat-box {
+            background: #eee;
+            padding: 5px;
+            border-radius: 5px;
+            float: left;
+        }
+
+        .mine {
+            float: right;
         }
     </style>
     <title>게시글 작성</title>
@@ -47,55 +68,55 @@
     </div>
 </nav>
 
-<h4 class="container mt-4"><strong>게시글 작성페이지</strong></h4>
-
-<form action="/upload" method="POST" enctype="multipart/form-data">
-    <div class="container mt-3">
-        <div class="form-group">
-            <label>제목</label>
-            <input type="text" class="form-control" id="title" name="title">
+<div class="container p-4 detail">
+    <div class="row">
+        <div class="col-3">
+            <ul class="list-group chat-list">
+                <li class="list-group-item" data-id="">
+                    <h6>채팅방1</h6>
+                    <h6 class="text-small">채팅방설명</h6>
+                </li>
+                <li class="list-group-item">
+                    <h6>채팅방2</h6>
+                    <h6 class="text-small">채팅방설명</h6>
+                </li>
+            </ul>
         </div>
-            <h6>이미지 파일</h6>
-            <input type="file" name="image" id="image-file">
-        <br>
-        <div class="form-group">
-            <label for="exampleFormControlTextarea1">내용</label>
-            <textarea class="form-control" id="content" name="content" rows="10"></textarea>
-        </div>
-        <div style="float: right;">
-            <button class="btn btn-outline-secondary" type="submit">작성</button>
-            <a class="btn btn-primary" href="http://localhost:3000/">취소</a>
+        <div class="col-9 p-0">
+            <div class="chat-room">
+                <ul class="list-group chat-content">
+                    <li><span class="chat-box">채팅방1 내용</span></li>
+                    <li><span class="chat-box">채팅방1 내용</span></li>
+                    <li><span class="chat-box mine">채팅방1 내용</span></li>
+                </ul>
+                <div class="input-group">
+                    <input class="form-control" id="chat-input">
+                    <button class="btn btn-secondary" id="send" onclick="chatting()">전송</button>
+                </div>
+            </div>
         </div>
     </div>
-</form>
-
+</div>
 
 <script>
-    function writeBoard() {
-        let title = document.getElementById('title').value;
-        let content = document.getElementById('content').value;
+    function chatting() {
 
         $.ajax({
-            url: `http://localhost:3000/board/write`,
+            url: `http://localhost:3000/chat`,
             method: `POST`,
             data: {
-                title,
-                content,
+                todo,
+                date
             },
             success: function (response) {
                 console.log(response);
-                alert(response.message);
-                // 글 작성 완료후 상세조회 페이지
-                window.location.replace(`http://localhost:3000/board/detail/${response.id}`);
             },
             error: function (response) {
                 console.log(response);
-                alert(response.message);
-                // 글 작성 실패시 다시 작성 페이지
-                window.location.reload();
             }
         });
     }
+
 </script>
 </body>
 </html>

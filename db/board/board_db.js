@@ -1,16 +1,27 @@
 const db = require('../../db/db');
 
 module.exports = {
-    // 페이징 처리..!
-    viewBoardList(res) {
-        db.query(`SELECT board.id, title, content, nickName from board left join member on board.member_id = member.id`,
-            (err, result) => {
-                if (err) {
-                    res.status(400).json({message: '다시 시도해주세요..!'});
-                } else {
-                    res.render('board/boardList.ejs', {result});
-                }
+    // 페이징 처리..! 기본 10개
+    viewBoardList(query, res) {
+        let page = query.page;
+        // query 숫자가 아닌경우
+        if (isNaN(page)) page = 0;
+
+        db.query(`SELECT board.id, title, content, nickName from board left join member on board.member_id = member.id`
+            , (err, result1) => {
+                let dataLength = result1.length;
+                console.log(`dataLength ==> ${dataLength}`);
+                db.query(`SELECT board.id, title, content, nickName from board left join member on board.member_id = member.id LIMIT ${page * 10}, ${(page + 1) * 10}`,
+                    (err, result2) => {
+                        if (err) {
+                            res.status(400).json({message: '다시 시도해주세요..!'});
+                        } else {
+                            res.render('board/boardList.ejs', {result: result2, dataLength, page});
+                        }
+                    });
             });
+
+
     },
 
     // 글 작성

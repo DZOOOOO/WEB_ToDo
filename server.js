@@ -8,6 +8,7 @@ const utils = require('./utils/utils');
 require('dotenv').config();
 
 const MongoClient = require('mongodb').MongoClient;
+let mongoDB;
 
 // 외부 라우터
 const todo = require('./router/todo');
@@ -39,7 +40,6 @@ app.get('/', (req, res) => {
 });
 
 // 채팅 DB ===> MongoDB
-let mongoDB;
 MongoClient.connect(process.env.MongoDB_URL, function (err, client) {
     if (err) return console.log(err);
     mongoDB = client.db('todoapp');

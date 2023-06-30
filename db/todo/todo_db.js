@@ -1,6 +1,7 @@
 const db = require('../../db/db');
 
 module.exports = {
+    // ToDo 작성
     saveTodo(todo, date, memberId, res) {
         db.query(`INSERT INTO mydb.todo (todo, date, complete, member_id) VALUES ('${todo}', '${date}', false, '${memberId}')`,
             (err) => {
@@ -25,16 +26,19 @@ module.exports = {
                     member_id: result[i].member_id
                 }
             }
-
             if (err) {
                 // 에러 페이지 렌더링..
                 return res.status(400).json({message: '다시 시도해주세요..!'});
             } else {
-                return res.render('todo/todoListPage.ejs', {filterResult});
+                return res.render('todo/todoListPage.ejs', {
+                    filterResult: filterResult.reverse(),
+                    member: member.nickName
+                });
             }
         });
     },
 
+    // ToDo 완성
     todoComplete(complete, todoId, res) {
         db.query(`UPDATE mydb.todo SET complete = ${complete} WHERE id = ${todoId}`, (err, result) => {
             if (err) {
@@ -45,6 +49,7 @@ module.exports = {
         })
     },
 
+    // ToDo 수정
     editTodo(todoId, editTodo, editDate, res) {
         db.query(`UPDATE mydb.todo SET todo = '${editTodo}', date = '${editDate}' WHERE id = ${todoId}`, (err) => {
             if (err) {

@@ -44,8 +44,7 @@
     </div>
 </nav>
 
-
-<table class="table">
+<table class="table text-center m-auto">
     <thead class="thead-dark">
     <tr>
         <th scope="col">번호</th>
@@ -63,6 +62,29 @@
     <% } %>
     </tbody>
 </table>
+<br>
+<br>
+<!-- 페이지 버튼 (페이지당 10개)-->
+<% let checkPage = (page * 10) - dataLength; %>
+<nav aria-label="Page navigation example">
+    <ul class="pagination" style="float: right">
+        <% if (parseInt(page) < 0 || parseInt(page) >= 1) { %>
+            <li class="page-item">
+                <a class="page-link" href="http://localhost:3000/board/list?page=<%= --page %>" aria-label="Previous">
+                    <span aria-hidden="true">⬅️</span>
+                </a>
+            </li>
+        <% } %>
+        <% if (checkPage < 0 && checkPage < -10) { %>
+            <li class="page-item">
+                <a class="page-link" href="http://localhost:3000/board/list?page=<%= ++page %>"
+                   aria-label="Next">
+                    <span aria-hidden="true">➡️</span>
+                </a>
+            </li>
+        <% } %>
+    </ul>
+</nav>
 
 </body>
 </html>

@@ -4,7 +4,6 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -17,6 +16,25 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous"></script>
+    <style>
+        .register-box {
+            width: 800px;
+            height: 650px;
+            margin: auto;
+            padding-top: 50px;
+        }
+
+        .register-btn {
+            float: right;
+        }
+
+        .register {
+            width: 1000px;
+            margin: 120px auto auto;
+            border: 3px solid black;
+            border-radius: 10px;
+        }
+    </style>
     <title>회원가입</title>
 </head>
 <body>
@@ -35,32 +53,148 @@
     </div>
 </nav>
 
-email : <input type="text" name="email" id="email">
-password : <input type="text" name="password" id="password">
-nickName <input type="text" name="nickName" id="nickName">
-<button onclick="register()">가입</button>
-<button onclick="location.replace('/')">취소</button>
+<div class="register">
+    <div class="register-box">
+        <div style="text-align: center">
+            <h1>ToDo</h1>
+        </div>
+        <h2>Email</h2>
+        <div class="input-group mb-3">
+            <input type="text" id="email" class="form-control"
+                   placeholder="이메일 형식으로 작성해주세요..!"
+                   aria-label="Username"
+                   aria-describedby="basic-addon1">
+        </div>
+        <p class="email-result"></p>
+
+        <h2>Password</h2>
+        <div class="input-group mb-3">
+            <input type="password" id="password" class="form-control"
+                   placeholder="비밀번호: 8~16자리로 작성해주세요..!"
+                   aria-label="Username"
+                   aria-describedby="basic-addon1">
+        </div>
+        <p class="password-result"></p>
+
+        <h2>Nickname</h2>
+        <div class="input-group mb-3">
+            <input type="text" id="nickName" class="form-control"
+                   placeholder="10자리 이내로 닉네임을 입력해주세요..!"
+                   aria-label="Username"
+                   aria-describedby="basic-addon1">
+        </div>
+        <p class="nickName-result"></p>
+
+        <div class="register-btn">
+            <button type="button" onclick="register()" class="btn btn-success">가입</button>
+            <button type="button" onclick="location.replace('/')" class="btn btn-secondary">취소</button>
+        </div>
+    </div>
+</div>
+
 
 <script>
+    /////////////////////////////////////  입력 데이터 유효성 체크 /////////////////////////////////////
+    const email_result = document.querySelector(".email-result");
+    const email_check = document.getElementById('email');
+    const password_result = document.querySelector(".password-result");
+    const password_check = document.getElementById('password');
+    const nickName_result = document.querySelector(".nickName-result");
+    const nickName_check = document.getElementById('nickName');
+    email_check.addEventListener("change", (e) => {
+        validEmail(e.target);
+    })
+    password_check.addEventListener("change", (e) => {
+        passwordCheck(e.target);
+    });
+    nickName_check.addEventListener("change", (e) => {
+        nickNameCheck(e.target);
+    });
+
+    // 이메일 형식 체크 정규식
+    function validEmail(obj) {
+        if (validEmailCheck(obj) === false) { // 이메일 형식에 맞지 않을 때
+            email_result.textContent = '이메일 형식으로 입력해주세요.';
+            email_result.style.color = "red";
+            // obj.value='';            // 형식에 맞지 않을 때 공백 처리
+            obj.focus();
+            return false;
+        } else {
+            email_result.textContent = '올바른 메일 형식입니다.'
+            email_result.style.color = "green";
+            return true;
+        }
+    }
+
+    function validEmailCheck(obj) {
+        let pattern = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+        return (obj.value.match(pattern) !== null)
+    }
+
+    function passwordCheck(password) {
+        if (checkSpace(password.value) || password.value.length > 16 || password.value.length < 8) {
+            password_result.textContent = '공백없이 8 ~ 16 자리로 입력해주세요.';
+            password_result.style.color = "red";
+            password.focus();
+            return false;
+        } else {
+            password_result.textContent = '올바른 비밀번호 형식입니다.'
+            password_result.style.color = "green";
+            return true;
+        }
+    }
+
+    function nickNameCheck(nickName) {
+        if (checkSpace(nickName.value) || nickName.value.length > 10 || nickName.value.length < 5) {
+            nickName_result.textContent = '공백없이 5~10자리 이내로 입력해주세요.';
+            nickName_result.style.color = "red";
+            nickName.focus();
+            return false;
+        } else {
+            nickName_result.textContent = '올바른 닉네임 형식입니다.'
+            nickName_result.style.color = "green";
+            return true;
+        }
+    }
+
+    // 공백(스페이스 바) 체크
+    function checkSpace(str) {
+        return str.search(/\s/) !== -1;
+    }
+
+    // 회원가입
     function register() {
         let email = document.getElementById('email').value;
         let password = document.getElementById('password').value;
         let nickName = document.getElementById('nickName').value;
 
-        $.ajax({
-            url: "http://localhost:3000/member/register",
-            method: 'POST',
-            data: {
-                email,
-                password,
-                nickName
-            },
-            success: function (response) {
-                console.log(response);
-                alert(response.message);
-                window.location.replace('http://localhost:3000/member/login');
-            }
-        });
+        if (email.length === 0 || password.length === 0 || nickName === 0) {
+            alert('빈칸없이 다시 시도해주세요..!');
+        }
+
+        if (validEmailCheck(email_check) && passwordCheck(password_check) && nickNameCheck(nickName_check)) {
+            $.ajax({
+                url: "http://localhost:3000/member/register",
+                method: 'POST',
+                data: {
+                    email,
+                    password,
+                    nickName
+                },
+                success: function (response) {
+                    console.log(response);
+                    alert(response.message);
+                    window.location.replace('http://localhost:3000/member/login');
+                },
+                error: function (response) {
+                    console.log(response);
+                    alert(response.responseJSON.message);
+                }
+            });
+        } else {
+            alert('확인 후 다시 입력해주세요..!');
+        }
+
     }
 </script>
 </body>

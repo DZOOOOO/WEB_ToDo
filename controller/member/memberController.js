@@ -6,10 +6,10 @@ module.exports = {
         res.render('member/memberRegisterPage.ejs');
     },
     memberRegisterController(req, res) {
-        // 데이터 유효성 검증
-        let email = req.body.email;
-        let password = req.body.password;
-        let nickName = req.body.nickName;
+        // 유효성 검증 한번 더???????
+        let email = req.body?.email;
+        let password = req.body?.password;
+        let nickName = req.body?.nickName;
         member_db.registerMember(email, password, nickName, res);
     },
 
