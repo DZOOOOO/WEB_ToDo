@@ -33,12 +33,9 @@ module.exports = {
 
     // 마이 페이지 (유저가 작성한 todo 리스트 + 게시판 전부 조회가능하게)
     memberMyPageViewController(req, res) {
-        console.log(JSON.stringify(req.user.id));
-        let data = {
-            user: req.user,
-        }
-
-        res.render('member/memberProfile.ejs', {data});
+        let loginUser = req.user.id;
+        let page = req.query.page;
+        member_db.profileViewMember(page, loginUser, res);
     },
 
 

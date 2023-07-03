@@ -14,7 +14,7 @@ module.exports = {
         let memberId = req.user?.id.id;
 
         if (todo === undefined || date === undefined) {
-            res.status(400).json({message : '다시 입력해주세요..!'});
+            res.status(400).json({message: '다시 입력해주세요..!'});
         }
         todo_db.saveTodo(todo, date, memberId, res);
     },
@@ -27,9 +27,10 @@ module.exports = {
 
     // todo 완료
     todoCompleteController(req, res) {
+        let member = req.user.id;
         let complete = req.body?.complete;
         let todoId = req.body?.todoId;
-        todo_db.todoComplete(complete, todoId, res);
+        todo_db.todoComplete(member, complete, todoId, res);
     },
 
     // todo 수정

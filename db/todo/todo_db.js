@@ -39,24 +39,34 @@ module.exports = {
     },
 
     // ToDo 완성
-    todoComplete(complete, todoId, res) {
-        db.query(`UPDATE mydb.todo SET complete = ${complete} WHERE id = ${todoId}`, (err, result) => {
-            if (err) {
-                return res.status(400).json({message: '다시 시도해주세요..!'});
-            } else {
+    todoComplete(member, complete, todoId, res) {
+        db.query(`UPDATE mydb.todo SET complete = ${complete} WHERE id = ${todoId}`, (err) => {
+            if (err) return res.status(400).json({message: '다시 시도해주세요..!'});
+
+            db.query(`SELECT * FROM mydb.todo WHERE member_id = ${member.id} AND complete = 1`, (err, result) => {
+                if (result.length === 5) {
+                    // SILVER
+                    db.query(`UPDATE mydb.member SET grade = 'SILVER'`, (err) => {
+                        return res.status(200).json({message: '실버승급...!'});
+                    });
+                } else if (result.length === 10) {
+                    // GOLD
+                    db.query(`UPDATE mydb.member SET grade = 'GOLD'`, (err) => {
+                        return res.status(200).json({message: '골드승급...!'});
+                    });
+                }
                 return res.status(200).json({message: '성공..!'});
-            }
+            })
         })
     },
 
     // ToDo 수정
     editTodo(todoId, editTodo, editDate, res) {
         db.query(`UPDATE mydb.todo SET todo = '${editTodo}', date = '${editDate}' WHERE id = ${todoId}`, (err) => {
-            if (err) {
-                return res.status(400).json({message: '다시 시도해주세요..!'});
-            } else {
-                return res.status(200).json({message: '성공..!'});
-            }
+            if (err) return res.status(400).json({message: '다시 시도해주세요..!'});
+            return res.status(200).json({message: '성공..!'});
         });
     }
+
+
 }

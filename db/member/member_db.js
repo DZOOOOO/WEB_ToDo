@@ -21,9 +21,31 @@ module.exports = {
                     });
             })
         })
-
-
     },
 
-
+    profileViewMember(page, loginUser, res) {
+        // query 숫자가 아닌경우
+        if (isNaN(page)) page = 0;
+        // 로그인 유저정보 + 작성한 게시글 + 작성한 TODOLIST
+        let userEmail = loginUser.email;
+        let userNickName = loginUser.nickName;
+        let userProfile_img = loginUser.profile_img;
+        let userGrade = loginUser.grade;
+        let data =
+            {
+                userEmail,
+                userNickName,
+                userProfile_img,
+                userGrade,
+                page
+            };
+        db.query(`SELECT * FROM mydb.board WHERE member_id = ${loginUser.id} LIMIT ${page * 5}, 5`, (err, result1) => {
+            data.boardList = result1;
+            db.query(`SELECT * FROM mydb.todo WHERE member_id = ${loginUser.id} AND complete = 1`, (err, result2) => {
+                data.todoList = result2;
+                // res.status(200).json({message: '성공..!', data});
+                res.render('member/memberProfile.ejs', {data});
+            });
+        });
+    }
 }

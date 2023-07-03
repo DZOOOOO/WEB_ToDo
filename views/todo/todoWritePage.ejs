@@ -38,10 +38,10 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <!--                <a class="nav-link" href="#">로그인</a>-->
+<!--                <a class="nav-link" href="#">나의 ToDo</a>-->
             </li>
             <li class="nav-item">
-                <!--                <a class="nav-link" href="#">회원가입</a>-->
+<!--                <a class="nav-link" href="#">회원가입</a>-->
             </li>
         </ul>
     </div>
@@ -70,9 +70,17 @@
     function writeTodo() {
         let todo = document.getElementById('todo').value;
         let date = document.getElementById('date').value;
-        let checkDate = new Date(date);
+        let today = new Date();
 
-        if (checkDate < new Date()) {
+        let year = today.getFullYear();
+        let month = today.getMonth();
+        let day = today.getDate();
+
+        let inputYear = date.split('-')[0];
+        let inputMonth = date.split('-')[1];
+        let inputDay = date.split('-')[2];
+
+        if (parseInt(inputYear) < year || parseInt(inputMonth) < month || parseInt(inputDay) < day) {
             return alert('날짜 확인 해주세요..!');
         } else if (todo === '' && date === '') {
             return alert('공백없이 작성해주세요..!');
@@ -86,8 +94,8 @@
                 },
                 success: function (response) {
                     console.log(response);
-                    alert(response.message);
-                    location.replace("/todo/list");
+                    alert('작성완료..!');
+                    location.replace('/todo/list');
                 },
                 error: function (response) {
                     console.log(response);

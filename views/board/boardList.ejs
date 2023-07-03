@@ -32,7 +32,7 @@
                 <a class="nav-link" href="http://localhost:3000/todo/list">나의 ToDoList</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">프로필</a>
+                <a class="nav-link" href="http://localhost:3000/member/profile">프로필</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="http://localhost:3000/board/write">글쓰기</a>
@@ -65,17 +65,29 @@
 <br>
 <br>
 <!-- 페이지 버튼 (페이지당 10개)-->
-<% let checkPage = (page * 10) - dataLength; %>
 <nav aria-label="Page navigation example">
     <ul class="pagination" style="float: right">
-        <% if (parseInt(page) < 0 || parseInt(page) >= 1) { %>
+
+        <% if(parseInt(page) >= 1) { %>
             <li class="page-item">
                 <a class="page-link" href="http://localhost:3000/board/list?page=<%= --page %>" aria-label="Previous">
                     <span aria-hidden="true">⬅️</span>
                 </a>
             </li>
-        <% } %>
-        <% if (checkPage < 0 && checkPage < -10) { %>
+
+            <% if(result.length > 0) { %>
+                <% ++page %>
+                <li class="page-item">
+                    <a class="page-link" href="http://localhost:3000/board/list?page=<%= ++page %>"
+                       aria-label="Next">
+                        <span aria-hidden="true">➡️</span>
+                    </a>
+                </li>
+            <% } else { %>
+
+            <% } %>
+
+        <% } else if (result.length > 0){ %>
             <li class="page-item">
                 <a class="page-link" href="http://localhost:3000/board/list?page=<%= ++page %>"
                    aria-label="Next">
@@ -83,6 +95,7 @@
                 </a>
             </li>
         <% } %>
+
     </ul>
 </nav>
 

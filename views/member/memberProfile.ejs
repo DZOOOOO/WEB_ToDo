@@ -17,6 +17,50 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous"></script>
+    <style>
+        .member-profile {
+            width: 1000px;
+            height: 400px;
+            margin: auto;
+            text-align: center;
+            /*border: 1px solid black;*/
+        }
+
+        .member-info {
+            width: 900px;
+            height: 300px;
+            margin: 20px auto;
+            padding-top: 15px;
+            text-align: center;
+            /*border: 1px solid black;*/
+        }
+
+        .member-detail {
+            width: 700px;
+            height: 200px;
+            margin: 30px auto;
+            /*border: 1px solid black;*/
+        }
+
+        .member-active {
+            text-align: center;
+
+        }
+
+        .board-list {
+            width: 900px;
+            height: 400px;
+            margin: auto;
+            /*border: 1px solid black;*/
+        }
+
+        .todo-list {
+            width: 900px;
+            height: 400px;
+            margin: auto;
+            /*border: 1px solid black;*/
+        }
+    </style>
     <title>마이 페이지</title>
 </head>
 <body>
@@ -29,15 +73,121 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="#">로그인</a>
+                <a class="nav-link" href="/todo/list">나의 ToDoList</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">회원가입</a>
+                <a class="nav-link" href="/board/list">커뮤니티</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/board/write">글쓰기</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/member/logout">로그아웃</a>
             </li>
         </ul>
     </div>
 </nav>
 
+<h2 style="text-align: center; margin-top: 10px;">🔥 <%= data.userNickName %>님의 마이 페이지 입니다..!</h2>
+
+<div class="member-profile">
+    <div class="member-info">
+        <% if(data.userProfile_img === 'BASIC') { %>
+            <img src="../../public/image/basic_profile.jpeg" style="width: 90px; height: 90px;">
+        <% } else { %>
+            <!--   기본이미지가 아닌경우 출력..!   -->
+            <img src="<%= data.userProfile_img %>" style="width: 70px; height: 70px;">
+        <% } %>
+
+        <div class="member-detail">
+            <div style="margin-top: 50px">
+                <p>📨 이메일 : <%= data.userEmail %></p>
+                <p>✔️ 닉네임 : <%= data.userNickName %></p>
+                <p>👊 등급 : <%= data.userGrade %></p>
+            </div>
+            <!--            <div style="margin-top: 50px">-->
+            <!--                <button>회원정보 수정하기</button>-->
+            <!--            </div>-->
+        </div>
+    </div>
+</div>
+<div class="member-active">
+    <div class="board-list">
+        <table class="table">
+            <thead class="thead-light">
+            <tr>
+                <th scope="col">글 번호</th>
+                <th scope="col">제목</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!--    제목을 누르면 상세 페이지로 진입    -->
+            <% for(let i = 0; i < data.boardList.length; i++) { %>
+                <tr>
+                    <th><%= data.boardList[i].id %></th>
+                    <td><a href="/board/detail/<%= data.boardList[i].id %>"><%= data.boardList[i].title %></a></td>
+                </tr>
+            <% } %>
+            </tbody>
+        </table>
+        <!--    페이징 처리    -->
+        <nav aria-label="Page navigation example" style="float: right">
+            <ul class="pagination">
+                <% if(parseInt(data.boardList.length) > 0) { %>
+                    <% if(data.page <= 0) { %>
+                        <li class="page-item">
+                            <a class="page-link" href="http://localhost:3000/member/profile?page=<%= ++data.page %>"
+                               aria-label="Previous">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    <% } else if (data.page > 0){ %>
+                        <li class="page-item">
+                            <a class="page-link" href="http://localhost:3000/member/profile?page=<%= --data.page %>"
+                               aria-label="Next">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <% ++data.page %>
+                        <li class="page-item">
+                            <a class="page-link" href="http://localhost:3000/member/profile?page=<%= ++data.page %>"
+                               aria-label="Previous">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    <% } %>
+                <% } else { %>
+                    <li class="page-item">
+                        <a class="page-link" href="http://localhost:3000/member/profile?page=<%= --data.page %>"
+                           aria-label="Next">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                <% } %>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="todo-list">
+        <table class="table">
+            <thead class="thead-light">
+            <tr>
+                <th scope="col">글 번호</th>
+                <th scope="col">완료된 ToDo</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!--    제목을 누르면 상세 페이지로 진입    -->
+            <% for(let i = 0; i < data.todoList.length; i++) { %>
+                <tr>
+                    <th><%= data.todoList[i].id %></th>
+                    <td><%= data.todoList[i].todo %></td>
+                </tr>
+            <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>
 
 </body>
 </html>

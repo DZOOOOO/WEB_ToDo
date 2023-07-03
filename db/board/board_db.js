@@ -7,12 +7,13 @@ module.exports = {
         // query 숫자가 아닌경우
         if (isNaN(page)) page = 0;
 
+        console.log(`page ===> ${page}`);
         db.query(`SELECT board.id, title, content, nickName from board left join member on board.member_id = member.id`
             , (err, result1) => {
                 let dataLength = result1.length;
-                console.log(`dataLength ==> ${dataLength}`);
-                db.query(`SELECT board.id, title, content, nickName from board left join member on board.member_id = member.id LIMIT ${page * 10}, ${(page + 1) * 10}`,
+                db.query(`SELECT board.id, title, content, nickName from board left join member on board.member_id = member.id LIMIT ${page * 10}, 10`,
                     (err, result2) => {
+                        console.log(result2);
                         if (err) {
                             res.status(400).json({message: '다시 시도해주세요..!'});
                         } else {
@@ -20,8 +21,6 @@ module.exports = {
                         }
                     });
             });
-
-
     },
 
     // 글 작성
@@ -98,7 +97,6 @@ module.exports = {
                     })
                 });
         }
-
 
     },
 

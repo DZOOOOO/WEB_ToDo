@@ -52,14 +52,15 @@
 <form action="http://localhost:3000/board/v1/write" method="POST" enctype="multipart/form-data">
     <div class="container mt-3">
         <div class="form-group">
-            <label>제목</label>
+            <label>✏️ 제목</label>
             <input type="text" class="form-control" id="title" name="title">
         </div>
-        <h6>이미지 파일</h6>
+        <h6>🚨이미지 파일은 하나만 등록해주세요..! (PNG, GIF, JPEG, JPG)</h6>
         <input type="file" name="image" id="image-file">
         <br>
+        <br>
         <div class="form-group">
-            <label for="exampleFormControlTextarea1">내용</label>
+            <label for="exampleFormControlTextarea1">📝 내용</label>
             <textarea class="form-control" id="content" name="content" rows="10"></textarea>
         </div>
         <div style="float: right;">
