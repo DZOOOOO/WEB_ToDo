@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const session = require('express-session');
 const methodOverride = require('method-override');
+const cors = require('cors');
 const utils = require('./utils/utils');
 require('dotenv').config();
 
@@ -23,9 +24,12 @@ app.use('/public', express.static('public'));
 // 라이브러리 미들웨어
 app.use(methodOverride('_method'));
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(session({secret: 'secretKey', resave: true, saveUninitialized: false}));
+app.use(session({secret: process.env.SESSION_SECRET_KEY, resave: true, saveUninitialized: false}));
 app.use(passport.initialize());
 app.use(passport.session());
+
+// CORS 처리
+app.use(cors({origin: process.env.CORS}));
 
 // 라우터 미들웨어
 app.use('/todo', utils.checkLogin, todo);
