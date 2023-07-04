@@ -3,8 +3,7 @@ const board_db = require('../../db/board/board_db')
 module.exports = {
     viewBoardList(req, res) {
         let query = req.query;
-        board_db.viewB
-        oardList(query, res);
+        board_db.viewBoardList(query, res);
     },
 
     viewBoardDetail(req, res) {
@@ -46,7 +45,8 @@ module.exports = {
         let boardId = req.params?.id;
         let title = req.body?.title;
         let content = req.body?.content;
-        let img_url = req.file?.location;
+        // let img_url = req.file?.location; ==> AWS S3 이미지 url 경로
+        let img_url = req.file?.path; // req.file?.path ==> 로컬 파일 경로
         board_db.editBoard(boardId, title, content, img_url, res);
     },
 
