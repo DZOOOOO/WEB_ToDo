@@ -45,10 +45,16 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <!--                <a class="nav-link" href="#">로그인</a>-->
+                <a class="nav-link" href="/todo/list">나의 ToDoList</a>
             </li>
             <li class="nav-item">
-                <!--                <a class="nav-link" href="#">회원가입</a>-->
+                <a class="nav-link" href="/board/write">글쓰기</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="http://localhost:3000/publicdata">기상특보</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/member/logout">로그아웃</a>
             </li>
         </ul>
     </div>
@@ -75,7 +81,7 @@
             </div>
             <% if (data.imgUrl?.img_url !== 'undefined') { %>
                 <div id="img-box">
-                    <img src="<%= data.imgUrl.img_url %>" alt="업로드 이미지">
+                    <img src="../../<%= data.imgUrl.img_url %>" alt="업로드 이미지">
                 </div>
             <% } %>
         </div>

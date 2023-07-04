@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        .content {
+            padding: 30px;
+        }
+
+        #precipitation {
+            width: 800px;
+            height: 150px;
+            border: 3px solid black;
+            margin: 50px auto auto;
+            border-radius: 10px;
+            padding: 30px;
+        }
+
+        #heavyRainWarning {
+            width: 800px;
+            height: 500px;
+            border: 3px solid black;
+            margin: 50px auto auto;
+            border-radius: 10px;
+            padding: 30px;
+        }
+
+        #strongWind {
+            width: 800px;
+            height: 600px;
+            border: 3px solid black;
+            margin: 50px auto auto;
+            border-radius: 10px;
+            padding: 35px;
+        }
+    </style>
+    <title>기상특보</title>
+</head>
+<body>
+<nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+    <a class="navbar-brand" href="/">ToDo</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <% if (info !== undefined) { %>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="http://localhost:3000/todo/list">나의 ToDoList</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="http://localhost:3000/member/profile">프로필</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="http://localhost:3000/publicdata">공공데이터</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="http://localhost:3000/member/logout">로그아웃</a>
+                </li>
+            </ul>
+        <% } else { %>
+
+        <% } %>
+    </div>
+</nav>
+
+<div class="content">
+    <h1 style="text-align: center">📢 기상 특보</h1>
+
+    <div id="precipitation">
+        <h3>🚨 긴급 강수량</h3>
+        <div id="pre-content">
+
+        </div>
+    </div>
+    <div id="heavyRainWarning">
+        <h3>⚡️ 기상 주의보</h3>
+        <div id="warning-content">
+
+        </div>
+    </div>
+</div>
+
+<script>
+    axios.get(`http://apis.data.go.kr/1360000/WthrWrnInfoService/getPwnStatus?serviceKey=<%= apicode %>&pageNo=1&numOfRows=10&dataType=JSON`)
+        .then(function (response) {
+            let weatherWarning = response.data.response.body.items.item[0];
+            let precipitation = weatherWarning.other;
+            let heavyRainWarning = weatherWarning.t6;
+            let strongWind = weatherWarning.t7;
+
+            console.log(weatherWarning)
+            console.log(`=======================`);
+            console.log(precipitation);
+            console.log(heavyRainWarning);
+            console.log(strongWind);
+            console.log(`=======================`);
+
+            let pre_template = `<p><strong>${precipitation.split('o')[1]}</strong></p>`;
+            let rain_template = `<p><strong>${heavyRainWarning.split(':')[1]}</strong></p>`;
+            let wind_template = ` <h4>🌪️ 강풍 주의보</h4>
+                                  <p><strong>${strongWind.split('예비특보')[1].split('(2)')[0].split('o')[1]}</strong></p>
+                                  <p><strong>${strongWind.split('예비특보')[1].split('(2)')[0].split('o')[2]}</strong></p>
+                                  <p><strong>${strongWind.split('예비특보')[1].split('(2)')[0].split('o')[3]}</strong></p>
+                                  <h4>🌬️ 풍랑 주의보</h4>
+                                  <p><strong>${strongWind.split('예비특보')[2].split('(3)')[0].split('o')[1]}</strong></p>
+                                  <p><strong>${strongWind.split('예비특보')[2].split('(3)')[0].split('o')[2]}</strong></p>
+                                  <p><strong>${strongWind.split('예비특보')[2].split('(3)')[0].split('o')[3]}</strong></p>
+                                  <p><strong>${strongWind.split('예비특보')[2].split('(3)')[0].split('o')[4]}</strong></p>
+                                  <p><strong>${strongWind.split('예비특보')[2].split('(3)')[0].split('o')[5]}</strong></p>
+                                  <h4>☔️ 호우 예비특보</h4>
+                                  <p><strong>${strongWind.split('예비특보')[3].split('o')[1]}</strong></p>
+                                  <p><strong>${strongWind.split('예비특보')[3].split('o')[2]}</strong></p>
+                                `;
+
+            let pit_template = `<p><strong>${precipitation}</strong></p>`
+            let heav_template = `<p><strong>${heavyRainWarning}</strong></p>`
+            let str_template = `<p><strong>${strongWind}</strong></p>`
+
+            $('#pre-content').append(pit_template);
+            $('#warning-content').append(heav_template, str_template);
+        })
+        .catch(function (err) {
+            console.log(err);
+        })
+        .finally(function () {
+
+        })
+</script>
+
+</body>
+</html>

@@ -8,9 +8,6 @@ const cors = require('cors');
 const utils = require('./utils/utils');
 require('dotenv').config();
 
-const MongoClient = require('mongodb').MongoClient;
-let mongoDB;
-
 // 외부 라우터
 const todo = require('./router/todo');
 const member = require('./router/member');
@@ -43,13 +40,14 @@ app.get('/', (req, res) => {
     res.render('index.ejs', {info: loginMember});
 });
 
-// 채팅 DB ===> MongoDB
-MongoClient.connect(process.env.MongoDB_URL, function (err, client) {
-    if (err) return console.log(err);
-    mongoDB = client.db('todoapp');
-
-    // DB 연결 ==> 서버 실행
-    app.listen('3000', () => {
-        console.log('listening on 3000')
+app.get('/publicdata', utils.checkLogin, (req, res) => {
+    let loginMember = req.user;
+    res.render('publicdata/publicdata.ejs', {
+        info: loginMember,
+        apicode: process.env.PUBLIC_DATA_ENCODING
     });
-})
+});
+
+app.listen(process.env.PORT, () => {
+    console.log(`listening on ${process.env.PORT}`);
+});

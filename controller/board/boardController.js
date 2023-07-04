@@ -3,7 +3,8 @@ const board_db = require('../../db/board/board_db')
 module.exports = {
     viewBoardList(req, res) {
         let query = req.query;
-        board_db.viewBoardList(query, res);
+        board_db.viewB
+        oardList(query, res);
     },
 
     viewBoardDetail(req, res) {
@@ -16,14 +17,16 @@ module.exports = {
         res.render('board/boardWrite_V1.ejs');
     },
 
-    // 이미지 업로드 추가
+    // 이미지 업로드 추가 ==> 로컬, S3 상황에 따라 적용
     writeBoard(req, res) {
         let title = req.body?.title;
         let content = req.body?.content;
         // 로그인된 맴버 객체는 req.user.id에 들어있다.
         let member_id = req.user.id?.id;
         // req.file.location ==> AWS S3 이미지 url 경로
-        let img_url = req.file?.location;
+        // let img_url = req.file?.location;
+        let img_url = req.file?.path; // req.file?.path ==> 로컬 파일 경로
+
         let data = {
             title,
             content,
