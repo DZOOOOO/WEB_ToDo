@@ -40,15 +40,6 @@
             border-radius: 10px;
             padding: 30px;
         }
-
-        #strongWind {
-            width: 800px;
-            height: 600px;
-            border: 3px solid black;
-            margin: 50px auto auto;
-            border-radius: 10px;
-            padding: 35px;
-        }
     </style>
     <title>기상특보</title>
 </head>
@@ -63,16 +54,16 @@
         <% if (info !== undefined) { %>
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:3000/todo/list">나의 ToDoList</a>
+                    <a class="nav-link" href="/todo/list">나의 ToDoList</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:3000/member/profile">프로필</a>
+                    <a class="nav-link" href="/member/profile">프로필</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:3000/publicdata">공공데이터</a>
+                    <a class="nav-link" href="/publicdata">공공데이터</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:3000/member/logout">로그아웃</a>
+                    <a class="nav-link" href="/member/logout">로그아웃</a>
                 </li>
             </ul>
         <% } else { %>
@@ -105,30 +96,6 @@
             let precipitation = weatherWarning.other;
             let heavyRainWarning = weatherWarning.t6;
             let strongWind = weatherWarning.t7;
-
-            console.log(weatherWarning)
-            console.log(`=======================`);
-            console.log(precipitation);
-            console.log(heavyRainWarning);
-            console.log(strongWind);
-            console.log(`=======================`);
-
-            let pre_template = `<p><strong>${precipitation.split('o')[1]}</strong></p>`;
-            let rain_template = `<p><strong>${heavyRainWarning.split(':')[1]}</strong></p>`;
-            let wind_template = ` <h4>🌪️ 강풍 주의보</h4>
-                                  <p><strong>${strongWind.split('예비특보')[1].split('(2)')[0].split('o')[1]}</strong></p>
-                                  <p><strong>${strongWind.split('예비특보')[1].split('(2)')[0].split('o')[2]}</strong></p>
-                                  <p><strong>${strongWind.split('예비특보')[1].split('(2)')[0].split('o')[3]}</strong></p>
-                                  <h4>🌬️ 풍랑 주의보</h4>
-                                  <p><strong>${strongWind.split('예비특보')[2].split('(3)')[0].split('o')[1]}</strong></p>
-                                  <p><strong>${strongWind.split('예비특보')[2].split('(3)')[0].split('o')[2]}</strong></p>
-                                  <p><strong>${strongWind.split('예비특보')[2].split('(3)')[0].split('o')[3]}</strong></p>
-                                  <p><strong>${strongWind.split('예비특보')[2].split('(3)')[0].split('o')[4]}</strong></p>
-                                  <p><strong>${strongWind.split('예비특보')[2].split('(3)')[0].split('o')[5]}</strong></p>
-                                  <h4>☔️ 호우 예비특보</h4>
-                                  <p><strong>${strongWind.split('예비특보')[3].split('o')[1]}</strong></p>
-                                  <p><strong>${strongWind.split('예비특보')[3].split('o')[2]}</strong></p>
-                                `;
 
             let pit_template = `<p><strong>${precipitation}</strong></p>`
             let heav_template = `<p><strong>${heavyRainWarning}</strong></p>`

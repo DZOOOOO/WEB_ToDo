@@ -29,7 +29,7 @@ module.exports = {
                         if (err) {
                             res.status(400).json({message: '다시 시도해주세요..!'});
                         } else {
-                            res.redirect(`http://localhost:3000/board/detail/${result1.insertId}`);
+                            res.redirect(`/board/detail/${result1.insertId}`);
                         }
                     })
             });
@@ -76,7 +76,7 @@ module.exports = {
                         if (err) {
                             res.status(400).json({message: '이미지 수정 실패..! 다시 시도해주세요..!'});
                         } else {
-                            res.redirect(`http://localhost:3000/board/detail/${boardId}`);
+                            res.redirect(`/board/detail/${boardId}`);
                         }
                     });
                 });
@@ -89,7 +89,7 @@ module.exports = {
                         if (err) res.status(400).json({message: '다시 시도해주세요..!'});
                         db.query(`UPDATE mydb.board_img SET img_url = '${result[0].img_url}' WHERE board_id = ${boardId}`, (err) => {
                             if (err) res.status(400).json({message: '다시 시도해주세요..!'});
-                            res.redirect(`http://localhost:3000/board/detail/${boardId}`);
+                            res.redirect(`/board/detail/${boardId}`);
                         })
                     })
                 });

@@ -38,7 +38,7 @@
                 <a class="nav-link" href="/board/write">글쓰기</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="http://localhost:3000/publicdata">기상특보</a>
+                <a class="nav-link" href="/publicdata">기상특보</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/member/logout">로그아웃</a>
@@ -50,8 +50,8 @@
 <h1 class="container mt-4 text-center">
     <strong><%= member %>님의 📚 ToDo 리스트</strong>
     <div style="margin-top: 20px">
-        <a class="btn btn-info" href="http://localhost:3000/todo/write">ToDo 작성</a>
-        <a class="btn btn-light" href="http://localhost:3000">홈으로</a>
+        <a class="btn btn-info" href="/todo/write">ToDo 작성</a>
+        <a class="btn btn-light" href="/">홈으로</a>
     </div>
 </h1>
 
@@ -130,7 +130,7 @@
         }
 
         $.ajax({
-            url: `http://localhost:3000/todo/edit/${todoId}`,
+            url: `/todo/edit/${todoId}`,
             method: `PATCH`,
             data: {
                 todoId,
@@ -170,7 +170,7 @@
     function todoComplete(todoId) {
         if (confirm('완료하시겠습니까? 완료후에는 수정이 불가능 합니다..!')) {
             $.ajax({
-                url: `http://localhost:3000/todo/complete/${todoId}`,
+                url: `/todo/complete/${todoId}`,
                 method: `PATCH`,
                 data: {
                     todoId: todoId,
@@ -202,7 +202,7 @@
     // 구현이 필요할 경우 체크
     function todoDelete() {
         $.ajax({
-            url: `http://localhost:3000/todo/write`,
+            url: `/todo/write`,
             method: `POST`,
             data: {
                 todo,

@@ -30,7 +30,7 @@
 <body>
 
 <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
-    <a class="navbar-brand" href="http://localhost:3000">ToDo</a>
+    <a class="navbar-brand" href="/">ToDo</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -61,7 +61,7 @@
         </div>
         <div style="float: right;">
             <button class="btn btn-outline-success" onclick="writeTodo()">작성</button>
-            <a class="btn btn-secondary" href="http://localhost:3000/todo/list">취소</a>
+            <a class="btn btn-secondary" href="/todo/list">취소</a>
         </div>
     </div>
 </div>
@@ -86,7 +86,7 @@
             return alert('공백없이 작성해주세요..!');
         } else {
             $.ajax({
-                url: `http://localhost:3000/todo/write`,
+                url: `/todo/write`,
                 method: `POST`,
                 data: {
                     todo,

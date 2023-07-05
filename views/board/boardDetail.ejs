@@ -51,7 +51,7 @@
                 <a class="nav-link" href="/board/write">글쓰기</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="http://localhost:3000/publicdata">기상특보</a>
+                <a class="nav-link" href="/publicdata">기상특보</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/member/logout">로그아웃</a>
@@ -88,13 +88,13 @@
     </div>
     <% if (loginUser.nickName === data.nickName.nickName) { %>
         <div style="float: right;">
-            <a class="btn btn-primary" href="http://localhost:3000/board/list">목록</a>
+            <a class="btn btn-primary" href="/board/list">목록</a>
             <a class="btn btn-primary" href="http://localhost:3000/board/edit/<%= data.board.id %>">수정</a>
             <a class="btn btn-primary" onclick="deleteBoard(<%= data.board.id %>)">삭제</a>
         </div>
     <% } else { %>
         <div style="float: right;">
-            <a class="btn btn-primary" href="http://localhost:3000/board/list">목록</a>
+            <a class="btn btn-primary" href="/board/list">목록</a>
         </div>
     <% } %>
     <br><br>
@@ -126,7 +126,7 @@
     // 댓글 조회
     function viewComment(boardId) {
         $.ajax({
-            url: `http://localhost:3000/comment/view/${boardId}`,
+            url: `/comment/view/${boardId}`,
             method: `GET`,
             data: {},
             success: function (response) {
@@ -184,7 +184,7 @@
     function writeComment(boardId) {
         let comment = document.getElementById('comment').value;
         $.ajax({
-            url: `http://localhost:3000/comment/write`,
+            url: `/comment/write`,
             method: `POST`,
             data: {
                 comment: comment,
@@ -193,7 +193,7 @@
             success: function (response) {
                 alert(response.message);
                 // 글 삭제 완료후 글 리스트 페이지
-                window.location.replace(`http://localhost:3000/board/detail/${boardId}`);
+                window.location.replace(`/board/detail/${boardId}`);
             },
             error: function (response) {
                 alert(response.message);
@@ -207,7 +207,7 @@
     function editComment(commentId) {
         let comment = document.getElementById(`edit-comment-${commentId}`).value;
         $.ajax({
-            url: `http://localhost:3000/comment/edit/${commentId}`,
+            url: `/comment/edit/${commentId}`,
             method: `PATCH`,
             data: {
                 commentId: commentId,
@@ -216,7 +216,7 @@
             success: function (response) {
                 alert(response.message);
                 // 댓글 수정 완료후 글 리스트 페이지
-                window.location.replace(`http://localhost:3000/board/detail/${boardId}`);
+                window.location.replace(`/board/detail/${boardId}`);
             },
             error: function (response) {
                 alert(response.message);
@@ -229,13 +229,13 @@
     function deleteComment(commentId) {
         if (confirm('삭제 하시나요?')) {
             $.ajax({
-                url: `http://localhost:3000/comment/delete/${commentId}`,
+                url: `/delete/${commentId}`,
                 method: `DELETE`,
                 data: {},
                 success: function (response) {
                     alert(response.message);
                     // 댓글 수정 완료후 글 리스트 페이지
-                    window.location.replace(`http://localhost:3000/board/detail/${boardId}`);
+                    window.location.replace(`/board/detail/${boardId}`);
                 },
                 error: function (response) {
                     alert(response.message);
@@ -249,13 +249,13 @@
     // 게시글 삭제
     function deleteBoard(boardId) {
         $.ajax({
-            url: `http://localhost:3000/board/delete/${boardId}`,
+            url: `/board/delete/${boardId}`,
             method: `DELETE`,
             data: {},
             success: function (response) {
                 alert(response.message);
                 // 글 삭제 완료후 글 리스트 페이지
-                window.location.replace(`http://localhost:3000/board/list`);
+                window.location.replace(`/board/list`);
             },
             error: function (response) {
                 alert(response.message);

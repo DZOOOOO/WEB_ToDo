@@ -39,7 +39,7 @@
 </head>
 <body>
 <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
-    <a class="navbar-brand" href="http://localhost:3000">ToDo</a>
+    <a class="navbar-brand" href="/">ToDo</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -47,7 +47,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="http://localhost:3000/member/login">로그인</a>
+                <a class="nav-link" href="/member/login">로그인</a>
             </li>
         </ul>
     </div>
@@ -174,7 +174,7 @@
 
         if (validEmailCheck(email_check) && passwordCheck(password_check) && nickNameCheck(nickName_check)) {
             $.ajax({
-                url: "http://localhost:3000/member/register",
+                url: "/member/register",
                 method: 'POST',
                 data: {
                     email,
@@ -184,7 +184,7 @@
                 success: function (response) {
                     console.log(response);
                     alert(response.message);
-                    window.location.replace('http://localhost:3000/member/login');
+                    window.location.replace('/member/login');
                 },
                 error: function (response) {
                     console.log(response);

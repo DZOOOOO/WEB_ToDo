@@ -23,8 +23,9 @@ module.exports = {
         // 로그인된 맴버 객체는 req.user.id에 들어있다.
         let member_id = req.user.id?.id;
         // req.file.location ==> AWS S3 이미지 url 경로
-        // let img_url = req.file?.location;
-        let img_url = req.file?.path; // req.file?.path ==> 로컬 파일 경로
+        let img_url_s3 = req.file?.location;
+        // req.file?.path ==> 로컬 파일 경로
+        let img_url = req.file?.path;
 
         let data = {
             title,
@@ -45,8 +46,10 @@ module.exports = {
         let boardId = req.params?.id;
         let title = req.body?.title;
         let content = req.body?.content;
-        // let img_url = req.file?.location; ==> AWS S3 이미지 url 경로
-        let img_url = req.file?.path; // req.file?.path ==> 로컬 파일 경로
+        // ==> AWS S3 이미지 url 경로
+        let img_url_s3 = req.file?.location;
+        // req.file?.path ==> 로컬 파일 경로
+        let img_url = req.file?.path;
         board_db.editBoard(boardId, title, content, img_url, res);
     },
 
