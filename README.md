@@ -10,20 +10,20 @@ Node.js + Express.js 기반 서버사이드 방식 웹
 
 # 적용 라이브러리
 ## 서버
-- Express.js
-- ejs (템플릿 엔진)
-- Passport
-- Bcrypt
-- dotenv
-- multer, multerS3
-- mysql2
-- cors
-- body-parser
-- nodemon
+- Express.js (4.18.2)
+- ejs (3.1.9)
+- Passport (0.6.0)
+- Bcrypt (5.1.0)
+- dotenv (16.3.1)
+- multer (1.4.5-lts.1), multerS3 (2.10.0) 
+- mysql2 (3.4.1)
+- cors (2.8.5)
+- body-parser (1.20.2)
+- nodemon (2.0.22)
 
 ## 클라이언트
-- Jquery
-- Bootstrap
+- Jquery (3.7.0)
+- Bootstrap (4.X)
 - axios
 
 # 기능 구현
